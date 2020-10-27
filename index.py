@@ -48,16 +48,21 @@ def registrar():
         email = email_entry.get()
         usuario = user_entry.get()
         senha = pass_entry.get()
-        banco_de_dados.cursor.execute("""
-        INSERT INTO usuarios(nome, email, usuario, senha) VALUES (?, ?, ?, ?)
-        """, (nome, email, usuario, senha))
-        banco_de_dados.conn.commit()
 
-        nome_entry.delete(0, END)
-        email_entry.delete(0, END)
-        user_entry.delete(0, END)
-        pass_entry.delete(0, END)
-        messagebox.showinfo(title="Informação de registro", message="Registrado com sucesso!")
+        if nome == "" or email == "" or usuario == "" or senha == "":
+            messagebox.showerror(title="Erro no registo",
+                                 message="Algum dos campos está vazio, preencha todos os campos.")
+        else:
+            banco_de_dados.cursor.execute("""
+            INSERT INTO usuarios(nome, email, usuario, senha) VALUES (?, ?, ?, ?)
+            """, (nome, email, usuario, senha))
+            banco_de_dados.conn.commit()
+
+            nome_entry.delete(0, END)
+            email_entry.delete(0, END)
+            user_entry.delete(0, END)
+            pass_entry.delete(0, END)
+            messagebox.showinfo(title="Informação de registro", message="Registrado com sucesso!")
 
     register_bt2 = ttk.Button(bot_frame, text="Registrar", command=registrar_no_banco)
     register_bt2.place(x=125, y=250, width=250, height=30)
