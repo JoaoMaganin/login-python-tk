@@ -105,6 +105,9 @@ def login():
         messagebox.showerror(title="Informação de login",
                              message="Acesso negado. Verifique se está cadastrado no sistema.")
 
+    user_entry.delete(0, END)
+    pass_entry.delete(0, END)
+
 
 # Colocando os widgets
 logo = PhotoImage(file="images/python_modificado.png")
