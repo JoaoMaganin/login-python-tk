@@ -1,5 +1,7 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
+import banco_de_dados
 
 # Iniciando e configurando a tela
 screen = Tk()
@@ -41,7 +43,23 @@ def registrar():
     pass_label.place(x=10, y=160)
     pass_entry.place(x=150, y=177)
 
-    register_bt2 = ttk.Button(bot_frame, text="Registrar", command=registrar)
+    def registrar_no_banco():
+        nome = nome_entry.get()
+        email = email_entry.get()
+        usuario = user_entry.get()
+        senha = pass_entry.get()
+        banco_de_dados.cursor.execute("""
+        INSERT INTO usuarios(nome, email, usuario, senha) VALUES (?, ?, ?, ?)
+        """, (nome, email, usuario, senha))
+        banco_de_dados.conn.commit()
+
+        nome_entry.delete(0, END)
+        email_entry.delete(0, END)
+        user_entry.delete(0, END)
+        pass_entry.delete(0, END)
+        messagebox.showinfo(title="Informação de registro", message="Registrado com sucesso!")
+
+    register_bt2 = ttk.Button(bot_frame, text="Registrar", command=registrar_no_banco)
     register_bt2.place(x=125, y=250, width=250, height=30)
 
     def voltar_menu():
