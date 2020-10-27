@@ -5,7 +5,7 @@ import banco_de_dados
 
 # Iniciando e configurando a tela
 screen = Tk()
-screen.geometry("500x600")
+screen.geometry("500x600+450+20")
 screen.title("Login com Python")
 screen.configure(bg="white")
 screen.resizable(0, 0)
@@ -88,6 +88,24 @@ def registrar():
     voltar_bt.place(x=150, y=290, width=200, height=30)
 
 
+def login():
+    usuario = user_entry.get()
+    senha = pass_entry.get()
+
+    banco_de_dados.cursor.execute("""
+    SELECT * FROM usuarios
+    WHERE usuario = ? AND senha = ?
+    """, (usuario, senha))
+
+    verifica_login = banco_de_dados.cursor.fetchone()
+    try:
+        if usuario in verifica_login and senha in verifica_login:
+            messagebox.showinfo(title="Informação de login", message="Logado com sucesso. Seja bem-vindo!")
+    except:
+        messagebox.showerror(title="Informação de login",
+                             message="Acesso negado. Verifique se está cadastrado no sistema.")
+
+
 # Colocando os widgets
 logo = PhotoImage(file="images/python_modificado.png")
 
@@ -106,7 +124,7 @@ pass_label.place(x=10, y=100)
 pass_entry = ttk.Entry(bot_frame, show="●")
 pass_entry.place(x=150, y=117, width=300, height=25)
 
-login_button = ttk.Button(bot_frame, text="Logar", command="#")
+login_button = ttk.Button(bot_frame, text="Logar", command=login)
 login_button.place(x=125, y=200, width=250, height=40)
 
 register_button = ttk.Button(bot_frame, text="Registrar", command=registrar)
